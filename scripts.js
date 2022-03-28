@@ -3,6 +3,21 @@ document.addEventListener("DOMContentLoaded", function(){
     createBoard();
     createKeyboard();
 
+    document.querySelector('input[type=button]').addEventListener('click', function () {
+        console.log("Guess button clicked!");
+    });
+
+    document.querySelectorAll('.board-key').forEach(function(key) {
+        key.addEventListener('mouseover', function() {
+            key.style.backgroundColor= 'lightgray';
+        });
+    });
+    document.querySelectorAll('.board-key').forEach(function(key) {
+        key.addEventListener('mouseout', function() {
+            key.style.backgroundColor = 'white';
+        });
+    });
+
     function createKeyboard() {
         let letterArr = ['q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'];
         let secondRowBegin = letterArr.indexOf('p');
@@ -18,6 +33,10 @@ document.addEventListener("DOMContentLoaded", function(){
             } else {
                 document.querySelector('#row3').append(boardKey);
             }
+            //retrieve letter of keyboard chosen
+            boardKey.addEventListener('click', function() {
+                console.log(this.innerHTML);
+            });
         }
     }
 
