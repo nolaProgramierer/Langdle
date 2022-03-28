@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", function(){
     createBoard();
     createKeyboard();
 
+    //checkWord("great");
+
     document.querySelector('input[type=button]').addEventListener('click', function () {
         console.log("Guess button clicked!");
     });
@@ -17,6 +19,23 @@ document.addEventListener("DOMContentLoaded", function(){
             key.style.backgroundColor = 'white';
         });
     });
+
+
+
+    function checkWord(word) {
+        let key = 'f5585967-bcee-4822-914f-8ed623d8f5c0';
+        let url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${key}`;
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            let w = data[0].hwi.hw;
+            if (w === undefined) {
+                console.log("Word not found");
+            } else {
+                console.log(w);
+            }
+        });
+    }
 
     function createKeyboard() {
         let letterArr = ['q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'];
