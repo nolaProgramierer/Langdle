@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", function(){
     createBoard();
     createKeyboard();
 
+    document.querySelector('form').addEventListener('submit', function(e) {
+        let w = document.querySelector('#word-input').value;
+        checkWord(w);
+        e.preventDefault();
+    });
+
     //checkWord("great");
 
     document.querySelector('input[type=button]').addEventListener('click', function () {
@@ -21,6 +27,19 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
 
+    function MakeWord(ltr1, ltr2, ltr3, ltr4, ltr5){
+        this.ltr1 = ltr1;
+        this.ltr2 = ltr2;
+        this.ltr3 = ltr3;
+        this.ltr4 = ltr4;
+        this.ltr5 = ltr5;
+        this.word = function() {
+
+        }
+
+    }
+
+
 
     function checkWord(word) {
         let key = 'f5585967-bcee-4822-914f-8ed623d8f5c0';
@@ -28,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function(){
         fetch(url)
         .then(response => response.json())
         .then(data => {
-            let w = data[0].hwi.hw;
+            let w = data[0].meta.stems[0];
             if (w === undefined) {
                 console.log("Word not found");
             } else {
