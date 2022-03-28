@@ -48,12 +48,9 @@ document.addEventListener("DOMContentLoaded", function(){
         .then(response => response.json())
         .then(data => {
             let w = data[0].meta.stems[0];
-            if (w === undefined) {
-                console.log("Word not found");
-            } else {
                 console.log(w);
-            }
-        });
+        })
+        .catch(err => console.log(err.message));
     }
 
     function createKeyboard() {
