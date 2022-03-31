@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", function(){
 
     createBoard();
-    createKeyboard();
+    //createKeyboard();
+
+    const key1 = new Keyboard();
+    key1.displayKeys();
+
+
 
     document.querySelector('form').addEventListener('submit', function(e) {
         let w = document.querySelector('#word-input').value;
@@ -32,34 +37,56 @@ document.addEventListener("DOMContentLoaded", function(){
        this.displayCell = () => `<div class='letter-box'></div>`;
    }
 
-   function Keyboard(letter = "", color = 'white') {
+   function Keyboard (letter = "", color = 'white') {
+       this.symbolArr = [
+        ['q','w','e','r','t','y','u','i','o','p'],
+        ['a','s','d','f','g','h','j','k','l'],
+        ['z','x','c','v','b','n','m']
+    ];
        this.letter = letter;
        this.color = color;
-       this.displayKeys = displayKeys;
+       this.displayKeys = function() {
+        for (var i = 0; i < this.symbolArr.length; i++) {
+            let boardRow = document.createElement('div');
+                boardRow.classList.add('board-row'); 
+            for(var j = 0; j < this.symbolArr[i].length; j ++) {
+                this.letter = document.createElement('div');
+                this.letter.classList.add('board-key');
+                this.letter.innerHTML = this.symbolArr[i][j];
+                boardRow.append(this.letter);
+            }
+            document.querySelector('#keyboard').append(boardRow);
+            //retrieve letter of keyboard chosen
+        }
+       };
    }
 
-   function createKeyboard() {
-    let letterArr = ['q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'];
-    let secondRowBegin = letterArr.indexOf('p');
-    let thirdRowBegin = letterArr.indexOf('l');
-    for (ltr of letterArr) {
-        let boardKey = document.createElement('div');
+
+   
+/*function createKeyboard() {
+    let letterArr = [
+        ['q','w','e','r','t','y','u','i','o','p'],
+        ['a','s','d','f','g','h','j','k','l'],
+        ['z','x','c','v','b','n','m']
+    ];
+
+    for (var i = 0; i < letterArr.length; i++) {
+        let boardRow = document.createElement('div');
+            boardRow.classList.add('board-row');
+            
+        for(var j = 0; j < letterArr[i].length; j ++) {
+            let boardKey = document.createElement('div');
             boardKey.classList.add('board-key');
-            boardKey.innerHTML = ltr;
-        if (letterArr.indexOf(ltr) <= secondRowBegin) {
-            document.querySelector('#row1').append(boardKey);
-        } else if (letterArr.indexOf(ltr) <= thirdRowBegin) {
-            document.querySelector('#row2').append(boardKey);
-        } else {
-            document.querySelector('#row3').append(boardKey);
+            boardKey.innerHTML = letterArr[i][j];
+            boardRow.append(boardKey);
         }
+
+        document.querySelector('#keyboard').append(boardRow);
         //retrieve letter of keyboard chosen
-        boardKey.addEventListener('click', function() {
-            console.log(this.innerHTML);
-        });
+        
     }
 }
-
+*/
    function createBoard() {
     const boardWrapper = document.querySelector('#board-wrapper');
     const numGuesses = 6;
@@ -81,12 +108,6 @@ document.addEventListener("DOMContentLoaded", function(){
         })
         .catch(err => console.log(err.message));
     }
-
-    
-
-   
-
-   
 
     console.log('DOM content parsed and loaded');
 });

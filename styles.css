@@ -41,13 +41,17 @@
 #row3 {
     grid-row: 3 / 4;
 }
+.board-row {
+    margin-top: 1em;
+}
 .board-key {
- display: inline-block;
- border: 1px solid black;  
- font-size: 2.5em;
- padding: .25em;
+    display: inline-block;
+    outline: 1px solid black;
+    padding: .25em;
+    font-size: 2em;
 }
 #keyboard input {
+    display: inline-block;
     font-size: 2em;
     margin-top: 1em;
 }
