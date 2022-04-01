@@ -1,33 +1,38 @@
 document.addEventListener("DOMContentLoaded", function(){
 
     createBoard();
-    //createKeyboard();
 
+    //createKeyboard();
     const key1 = new Keyboard();
     key1.displayKeys();
 
+    getWord();
 
-
-    document.querySelector('form').addEventListener('submit', function(e) {
-        let w = document.querySelector('#word-input').value;
-        checkWord(w);
-        e.preventDefault();
-    });
-
-
+    
+    // Guess button event handler
     document.querySelector('input[type=button]').addEventListener('click', function () {
         console.log("Guess button clicked!");
     });
-
+    // Keyboard mouseover handler
     document.querySelectorAll('.board-key').forEach(function(key) {
         key.addEventListener('mouseover', function() {
             key.style.backgroundColor= 'lightgray';
         });
     });
+    // Keyboard mouseout handler
     document.querySelectorAll('.board-key').forEach(function(key) {
         key.addEventListener('mouseout', function() {
             key.style.backgroundColor = 'white';
         });
+    });
+    // Show/hide debug div
+    document.querySelector('#debug-btn').addEventListener('click', function() {
+        var div = document.querySelector('#debug-form');
+        if (div.style.display === 'none') {
+            div.style.display = 'block';
+        } else {
+            div.style.display = 'none';
+        }
     });
 
 
@@ -56,37 +61,30 @@ document.addEventListener("DOMContentLoaded", function(){
                 boardRow.append(this.letter);
             }
             document.querySelector('#keyboard').append(boardRow);
-            //retrieve letter of keyboard chosen
         }
        };
    }
 
+   function displayGeuss(arr) {
+       document.querySelector('#board-wrapper')
 
-   
-/*function createKeyboard() {
-    let letterArr = [
-        ['q','w','e','r','t','y','u','i','o','p'],
-        ['a','s','d','f','g','h','j','k','l'],
-        ['z','x','c','v','b','n','m']
-    ];
+   }
 
-    for (var i = 0; i < letterArr.length; i++) {
-        let boardRow = document.createElement('div');
-            boardRow.classList.add('board-row');
-            
-        for(var j = 0; j < letterArr[i].length; j ++) {
-            let boardKey = document.createElement('div');
-            boardKey.classList.add('board-key');
-            boardKey.innerHTML = letterArr[i][j];
-            boardRow.append(boardKey);
-        }
-
-        document.querySelector('#keyboard').append(boardRow);
-        //retrieve letter of keyboard chosen
-        
+   captureGuess();
+   function captureGuess() {
+       let maxLength = 5;
+       geussArr = [];
+       document.querySelectorAll('.board-key').forEach(function(key) {
+        key.addEventListener('click', function() {
+            if (geussArr.length < maxLength) {
+                geussArr.push(this.innerHTML);
+                console.log(geussArr);
+            } else alert("Only 5 letters allowed")
+        });
+    });
+    return geussArr;
     }
-}
-*/
+
    function createBoard() {
     const boardWrapper = document.querySelector('#board-wrapper');
     const numGuesses = 6;
@@ -96,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function(){
     console.log(arr);
     boardWrapper.innerHTML = arr.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
 }
+
 
     function checkWord(word) {
         let key = 'f5585967-bcee-4822-914f-8ed623d8f5c0';
@@ -109,5 +108,21 @@ document.addEventListener("DOMContentLoaded", function(){
         .catch(err => console.log(err.message));
     }
 
-    console.log('DOM content parsed and loaded');
+    function getWord() {
+        var randomWord;
+        let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
+        let url = `https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&api_key=${key}`;
+        fetch (url)
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('#game-word').innerText = data.word;
+            randomWord = data.word;
+            console.log(randomWord);
+            return randomWord;
+        })
+        .catch(err => console.log(err.message));
+    }
+
 });
+
+

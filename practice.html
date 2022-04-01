@@ -1,0 +1,48 @@
+<!doctype html>
+	<html>
+	<head>
+	<meta charset="utf-8">
+	<script src="https://unpkg.com/react@16.7.0/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.development.js"></script>
+	<title>React Try It - 1</title>
+	<style type="text/css">
+		.quote {max-width: 400px; width: 100%; margin: 0 auto;}
+
+	</style>
+	</head>
+	
+	<body>
+		<div id="myapp"></div>
+        <div id="'mylist"></div>
+        <div id="myapp1"></div>
+        <div id="'mylist1"></div>
+		
+	<script>
+	var quote = React.createElement("p",{className:"quote"},"Four score and sevem years ago");
+    var sites = ["Fnance", "Weather", "Sports"]
+
+    
+    var myList = React.createElement("ol", null,
+		   React.createElement("li",null,
+				React.createElement("a", {"href":"https://finance.yahoo.com","target": "_blank"}, "Finance")
+							  ),
+									 
+		   React.createElement("li",null,
+				React.createElement("a", {"href":"https://weather.com","target": "_blank"}, "Weather")
+							  ),
+									 
+		   React.createElement("li",null,
+				React.createElement("a", {"href":"https://espn.com","target": "_blank"}, "Sports")
+							  )
+	 	);
+	
+	ReactDOM.render(quote, myapp);	
+    ReactDom.render(select, mylist);
+	</script>	
+	</body>
+	</html>
+
+
+
+
+
