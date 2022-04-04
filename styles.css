@@ -25,6 +25,16 @@
     box-sizing: border-box;
     outline: 1px solid black;
     padding-right: 2px;
+    text-align: center;
+}
+.correct {
+    background-color: lightgreen;
+}
+.partially-correct {
+    background-color: yellow;
+}
+.wrong {
+    background-color: lightgray;
 }
 #keyboard {
     display: grid;
