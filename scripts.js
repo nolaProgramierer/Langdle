@@ -59,13 +59,13 @@ document.addEventListener("DOMContentLoaded", function(){
     // Random 5-letter word from API
     var apiWord = getWord(captureGuess);
     
-    /*
+
     // Guess button event handler
     document.querySelector('input[type=button]').addEventListener('click', function () {
-        checkGeussWord(guess, xword);
+        //checkGeussWord(guess, xword);
         console.log("Guess button clicked!");
     });
-    */
+
     // Keyboard mouseover handler
     document.querySelectorAll('.board-key').forEach(function(key) {
         key.addEventListener('mouseover', function() {
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function(){
         .then(response => response.json())
         .then(data => {
             document.querySelector('#game-word').innerText = data.word;
-            console.log(data.word);
+            console.log(`Random word is: ${data.word}`);
             let rWord = data.word;
             console.log(rWord.split(""));
             return rWord.split("");
