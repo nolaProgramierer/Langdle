@@ -66,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function(){
     // Guess button event handler
     document.querySelector('input[type=button]').addEventListener('click', function () {
         checkGuessWord(guess, testWordArr);
-        if (isWinner) console.log("There's a winner!");
     });
 
     // Keyboard mouseover handler
@@ -95,8 +94,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Test for winner
     function isWinner(arr0, arr1) {
-        let result = arr0.every((el)=> {return arr1.includes(el);});
-        return result;
+       if (arr0.join("") == arr1.join("")) {
+           console.log("You're a winner");
+       } else  {
+           console.log("We're continuing");
+       }
     }
 
 
@@ -123,12 +125,8 @@ document.addEventListener("DOMContentLoaded", function(){
                 board.children[i].classList.add("wrong");
             }
         }
-        if (guesses == theCorrectAnswer) {
-            console.log("Game Over");
-        }
-       
-
-    }
+        isWinner(guesses, theCorrectAnswer);
+    }// end checkGuessWord
 
     // Add keyboard guesses to array and call function to display letter in cell
    function captureGuess(theCorrectAnswer) {
