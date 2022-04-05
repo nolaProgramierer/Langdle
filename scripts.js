@@ -84,10 +84,10 @@ document.addEventListener("DOMContentLoaded", function(){
     // Show/hide debug div
     document.querySelector('#debug-btn').addEventListener('click', function() {
         var div = document.querySelector('#debug-form');
-        if (div.style.display === 'none') {
-            div.style.display = 'block';
-        } else {
+        if (div.style.display === 'block') {
             div.style.display = 'none';
+        } else {
+            div.style.display = 'block';
         }
     });
 
@@ -98,13 +98,6 @@ document.addEventListener("DOMContentLoaded", function(){
         let board = document.querySelector('#board-wrapper');
         board.children[indexOfLetter].innerHTML = letterToBeAdded;
         console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded); 
-        /*if (theCorrectAnswer[indexOfLetter].toLowerCase() == letterToBeAdded.toLowerCase()){
-            board.children[indexOfLetter].classList.add("correct"); 
-        } else if ((theCorrectAnswer.includes(letterToBeAdded) && (theCorrectAnswer[indexOfLetter].toLowerCase() != letterToBeAdded))) {
-            board.children[indexOfLetter].classList.add("partially-correct");
-        } else {
-            board.children[indexOfLetter].classList.add("wrong");
-        }*/
     }
 
     function checkGuessWord(guesses, theCorrectAnswer) {
