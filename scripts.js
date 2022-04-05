@@ -1,10 +1,10 @@
 class Cell {
-    constructor(row = 0, rowIndex = 0, letter = "", color = 'white'){
+    constructor(row, rowIndex, letter = "", color = 'white'){
         this.letter = letter;
         this.color = color;
         this.rowIndex = rowIndex;
         this.row = row;
-        this.displayCell = () => `<div class='letter-box' data-row=${this.row} data-rowIndex=${this.rowIndex}></div>`;
+        this.displayCell = () => `<div class='letter-box' data-row=${this.row} data-rowindex=${this.rowIndex}></div>`;
  }
 
 } // end Cell class
@@ -45,7 +45,6 @@ class Game {
     getWord() {}
 }
 
-
 document.addEventListener("DOMContentLoaded", function(){
 
     createBoard();
@@ -62,8 +61,8 @@ document.addEventListener("DOMContentLoaded", function(){
     // test word
     var testWordArr = "sword".split("");
 
+    var boardRow = 0;
 
-    
 
     // Guess button event handler
     document.querySelector('input[type=button]').addEventListener('click', function () {
@@ -92,8 +91,6 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     });
 
-
-
     // Test for winner
     function isWinner(arr0, arr1) {
        if (arr0.join("") == arr1.join("")) {
@@ -105,15 +102,21 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
    // Add word letters 
-   function displayGeussInCell(indexOfLetter, letterToBeAdded, theCorrectAnswer) {
-       console.log(theCorrectAnswer);
-        let board = document.querySelector('#board-wrapper');
-        board.children[indexOfLetter].innerHTML = letterToBeAdded;
-        console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded); 
+   function displayGeussInCell(indexOfLetter, letterToBeAdded, theCorrectAnswer, boardRow) {
+    //console.log(theCorrectAnswer);
+    console.log("Board row " + boardRow);
+    let board = document.querySelector('#board-wrapper');
+    let cellRow = document.querySelectorAll(`.letter-box[data-row="${boardRow}"`);
+    cellRow[indexOfLetter].innerHTML = letterToBeAdded;
+    console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded);
+       
     }
+
 
     // After five letters entered in board, check word against random word
     function checkGuessWord(guesses, theCorrectAnswer) {
+        boardRow ++;
+        guessArr = [];
         let board = document.querySelector('#board-wrapper');
         console.log(theCorrectAnswer);
         console.log(guesses);
@@ -128,10 +131,11 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         }
         isWinner(guesses, theCorrectAnswer);
+
     }// end checkGuessWord
 
     // Add keyboard guesses to array and call function to display letter in cell
-   function captureGuess(theCorrectAnswer) {
+    function captureGuess(theCorrectAnswer) {
        let maxLength = 5;
        guessArr = [];
        document.querySelectorAll('.board-key').forEach(function(key) {
@@ -139,14 +143,13 @@ document.addEventListener("DOMContentLoaded", function(){
             if (guessArr.length < maxLength) {
                 let indexOfLetter = guessArr.length; 
                 guessArr.push(this.innerHTML);
-                displayGeussInCell(indexOfLetter, this.innerHTML, theCorrectAnswer);
+                displayGeussInCell(indexOfLetter, this.innerHTML, theCorrectAnswer, boardRow);
                 guess = guessArr;
-                console.log(guess);
-                return guess;
-            } else alert("Only 5 letters allowed");
+            } 
+            else alert("Only 5 letters allowed");
         });
     });
-    //guess = guessArr;
+    guess = guessArr;
     } // end captureGeuss
 
 
@@ -155,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function(){
     const numGuesses = 6;
     const wordLength = 5;
 
+    // Use map index arguments to establish data properties of cell
     let arr = Array(numGuesses).fill().map((el, i) => Array(wordLength).fill().map((el, j) => new Cell(i,j)));
     console.log(`This is the array to create a word board`);
     boardWrapper.innerHTML = arr.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
