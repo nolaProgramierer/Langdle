@@ -37,12 +37,9 @@ class Game {
     constructor(apiKey){
         this.apiKey = apiKey; 
     }
-
     setUpDOM() {
         this.getWord(this.getWord);
     }
-
-
     getWord() {}
 }
 
@@ -50,6 +47,7 @@ class Game {
 document.addEventListener("DOMContentLoaded", function(){
 
     createBoard();
+   
     var guess = ""; 
 
     //createKeyboard();
@@ -57,12 +55,17 @@ document.addEventListener("DOMContentLoaded", function(){
     key1.displayKeys();
 
     // Random 5-letter word from API
-    var apiWord = getWord(captureGuess);
+    getWord(captureGuess());
+
+    // test word
+    var testWordArr = "sword".split("");
+
+
     
 
     // Guess button event handler
     document.querySelector('input[type=button]').addEventListener('click', function () {
-        //checkGeussWord(guess, xword);
+        checkGuessWord(guess, testWordArr);
         console.log("Guess button clicked!");
     });
 
@@ -95,12 +98,28 @@ document.addEventListener("DOMContentLoaded", function(){
         let board = document.querySelector('#board-wrapper');
         board.children[indexOfLetter].innerHTML = letterToBeAdded;
         console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded); 
-        if (theCorrectAnswer[indexOfLetter].toLowerCase() == letterToBeAdded.toLowerCase()){
+        /*if (theCorrectAnswer[indexOfLetter].toLowerCase() == letterToBeAdded.toLowerCase()){
             board.children[indexOfLetter].classList.add("correct"); 
         } else if ((theCorrectAnswer.includes(letterToBeAdded) && (theCorrectAnswer[indexOfLetter].toLowerCase() != letterToBeAdded))) {
             board.children[indexOfLetter].classList.add("partially-correct");
         } else {
             board.children[indexOfLetter].classList.add("wrong");
+        }*/
+    }
+
+    function checkGuessWord(guesses, theCorrectAnswer) {
+        let board = document.querySelector('#board-wrapper');
+        console.log(theCorrectAnswer);
+        console.log(guesses);
+        for (let i = 0; i < guesses.length; i ++) {
+            // go through the guess array and check against the correct answer
+            if (theCorrectAnswer[i].toLowerCase() == guesses[i].toLowerCase()){
+                board.children[i].classList.add("correct"); 
+            } else if ((theCorrectAnswer.includes(guesses[i]) && (theCorrectAnswer[i].toLowerCase() != guesses[i]))) {
+                board.children[i].classList.add("partially-correct");
+            } else {
+                board.children[i].classList.add("wrong");
+            }
         }
     }
 
@@ -120,10 +139,6 @@ document.addEventListener("DOMContentLoaded", function(){
     guess = guessArr;
     } // end captureGeuss
 
-    function checkGeussWord(arr0, arr1) {
-       console.log(arr0);
-       console.log(arr1);
-    }// end checkGeussWord
 
    function createBoard() {
     const boardWrapper = document.querySelector('#board-wrapper');
@@ -144,9 +159,8 @@ document.addEventListener("DOMContentLoaded", function(){
         .then(data => {
             document.querySelector('#game-word').innerText = data.word;
             console.log(`Random word is: ${data.word}`);
-            let rWord = data.word;
-            console.log(rWord.split(""));
-            return rWord.split("");
+            console.log(data.word.split(""));
+            
         })
         .then(nextCodeToExecuteCallBCK)
         .catch(err => console.log(err.message));
