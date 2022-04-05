@@ -1,8 +1,10 @@
 class Cell {
-    constructor(letter = "", color = 'white'){
+    constructor(row = 0, rowIndex = 0, letter = "", color = 'white'){
         this.letter = letter;
         this.color = color;
-        this.displayCell = () => `<div class='letter-box'></div>`;
+        this.rowIndex = rowIndex;
+        this.row = row;
+        this.displayCell = () => `<div class='letter-box' data-row=${this.row} data-rowIndex=${this.rowIndex}></div>`;
  }
 
 } // end Cell class
@@ -153,8 +155,8 @@ document.addEventListener("DOMContentLoaded", function(){
     const numGuesses = 6;
     const wordLength = 5;
 
-    let arr = Array(numGuesses).fill().map(() => Array(wordLength).fill().map(() => new Cell()));
-    console.log(arr);
+    let arr = Array(numGuesses).fill().map((el, i) => Array(wordLength).fill().map((el, j) => new Cell(i,j)));
+    console.log(`This is the array to create a word board`);
     boardWrapper.innerHTML = arr.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
 }
 
