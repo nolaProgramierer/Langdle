@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function(){
     document.querySelector('input[type=button]').addEventListener('click', function () {
         checkGuessWord(guess, testWordArr);
         console.log("Guess button clicked!");
+        console.log(guess);
     });
 
     // Keyboard mouseover handler
@@ -92,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
 
-   
+   // Add word letters 
    function displayGeussInCell(indexOfLetter, letterToBeAdded, theCorrectAnswer) {
        console.log(theCorrectAnswer);
         let board = document.querySelector('#board-wrapper');
@@ -100,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function(){
         console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded); 
     }
 
+    // After five letters entered in board, check word against random word
     function checkGuessWord(guesses, theCorrectAnswer) {
         let board = document.querySelector('#board-wrapper');
         console.log(theCorrectAnswer);
@@ -116,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 
+    // Add keyboard guesses to array and call function to display letter in cell
    function captureGuess(theCorrectAnswer) {
        let maxLength = 5;
        guessArr = [];
