@@ -66,8 +66,7 @@ document.addEventListener("DOMContentLoaded", function(){
     // Guess button event handler
     document.querySelector('input[type=button]').addEventListener('click', function () {
         checkGuessWord(guess, testWordArr);
-        console.log("Guess button clicked!");
-        console.log(guess);
+        if (isWinner) console.log("There's a winner!");
     });
 
     // Keyboard mouseover handler
@@ -93,6 +92,14 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
 
+
+    // Test for winner
+    function isWinner(arr0, arr1) {
+        let result = arr0.every((el)=> {return arr1.includes(el);});
+        return result;
+    }
+
+
    // Add word letters 
    function displayGeussInCell(indexOfLetter, letterToBeAdded, theCorrectAnswer) {
        console.log(theCorrectAnswer);
@@ -109,13 +116,18 @@ document.addEventListener("DOMContentLoaded", function(){
         for (let i = 0; i < guesses.length; i ++) {
             // go through the guess array and check against the correct answer
             if (theCorrectAnswer[i].toLowerCase() == guesses[i].toLowerCase()){
-                board.children[i].classList.add("correct"); 
+                board.children[i].classList.add("correct");
             } else if ((theCorrectAnswer.includes(guesses[i]) && (theCorrectAnswer[i].toLowerCase() != guesses[i]))) {
                 board.children[i].classList.add("partially-correct");
             } else {
                 board.children[i].classList.add("wrong");
             }
         }
+        if (guesses == theCorrectAnswer) {
+            console.log("Game Over");
+        }
+       
+
     }
 
     // Add keyboard guesses to array and call function to display letter in cell
@@ -128,11 +140,13 @@ document.addEventListener("DOMContentLoaded", function(){
                 let indexOfLetter = guessArr.length; 
                 guessArr.push(this.innerHTML);
                 displayGeussInCell(indexOfLetter, this.innerHTML, theCorrectAnswer);
-                console.log(guessArr);
+                guess = guessArr;
+                console.log(guess);
+                return guess;
             } else alert("Only 5 letters allowed");
         });
     });
-    guess = guessArr;
+    //guess = guessArr;
     } // end captureGeuss
 
 
