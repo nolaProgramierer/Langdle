@@ -104,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function(){
            document.querySelector('#debug-form').style.display = "none";
            document.querySelector('#debug-btn').style.display = "none";
            document.querySelector('#new-game').style.display = "block";
+           document.querySelector('#keyboard').classList.add('disable-click');
        } else  {
            console.log("We're continuing");
        }

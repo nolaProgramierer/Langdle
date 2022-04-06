@@ -1,6 +1,6 @@
 #game-container {
     display: grid;
-    grid-template-columns: 25% 50% 25%;
+    grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: auto;
     row-gap: 1em;;
 }
@@ -18,10 +18,23 @@
     grid-column: 2 / 3;
     justify-self: center;
 }
+@media only screen and (max-width: 720px) {
+    #keyboard {
+       font-size: .80em;
+    }
+}
+@media only screen and (max-width: 580px) {
+    #keyboard {
+       font-size: .65em;
+    }
+}
 #game-controls {
     grid-row: 3 / 4;
     grid-column: 1 / 2;
-    justify-self: center;
+    justify-items: center;
+}
+#game-word {
+    text-align: center;
 }
 .letter-box {
     height: 3em;
@@ -73,6 +86,13 @@
 #debug-form {
     display: none;
 }
+#debug-btn {
+    margin-top: 1em;
+    justify-self: center;
+}
 #new-game {
     display: none;
+}
+.disable-click {
+    pointer-events: none;
 }
