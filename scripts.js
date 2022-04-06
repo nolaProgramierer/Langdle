@@ -56,17 +56,9 @@ document.addEventListener("DOMContentLoaded", function(){
     //createKeyboard();
     key1.displayKeys();
 
-    // Random 5-letter word from API
-   
-         getWord(captureGuess); 
+    // Retrieve random 5-letter word from Wordnik API
+    getWord(captureGuess); 
         
-       
-
- 
-    
-    // test word
-    // var testWordArr = "sword".split("");
-
     // Guess button event handler
     document.querySelector('input[type=button]').addEventListener('click', function () {
         checkGuessWord();
@@ -94,10 +86,21 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     });
 
+    // New game button
+    document.querySelector('#new-game').addEventListener('click', function() {
+        location.reload();
+    });
+
     // Test for winner
     function isWinner(arr0, arr1) {
        if (arr0.join("") == arr1.join("")) {
            console.log("You're a winner");
+           setTimeout(function() {
+            alert("You've guessed the word!");
+           }, 250);
+           document.querySelector('#debug-form').style.display = "none";
+           document.querySelector('#debug-btn').style.display = "none";
+           document.querySelector('#new-game').style.display = "block";
        } else  {
            console.log("We're continuing");
        }
@@ -137,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 board[i].classList.add("wrong");
             }
         }
-        isWinner(theGuessArr[CURRENT_ROW], theCorrectAnswer);
+        isWinner(currentGuess.split(""), theCorrectAnswer);
         CURRENT_ROW ++;
         console.log("The current row is ", CURRENT_ROW); 
        
@@ -210,13 +213,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
- checkWordAgainstDict("swxd")
+ checkWordAgainstDict("S & M")
  .then ((status) => {
       if (status == 200) 
         console.log("FOUND A WORD"); 
     else
-        console.log("FOUND NOT THE WORD"); 
- })
+        console.log("WORD NOT FOUND"); 
+ });
 
     function checkWordAgainstDict(word) {
         let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
@@ -228,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function(){
         .catch(err => console.log(err.message));
     }
     
-});
+}); // End DOMContentLoaded
 
 
 
