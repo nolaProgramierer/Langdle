@@ -46,27 +46,30 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", function(){
+    var firstRun = false; 
+    var theCorrectAnswer = null; 
+    var theGuessArr = []; 
+    var CURRENT_ROW = 0; // used to access different rows for each of the user's guesses
+    const key1 = new Keyboard();
 
     createBoard();
-   
-    var guess = ""; 
-
     //createKeyboard();
-    const key1 = new Keyboard();
     key1.displayKeys();
 
     // Random 5-letter word from API
-    getWord(captureGuess());
+   
+         getWord(captureGuess); 
+        
+       
 
+ 
+    
     // test word
-    var testWordArr = "sword".split("");
-
-    var boardRow = 0;
-
+    // var testWordArr = "sword".split("");
 
     // Guess button event handler
     document.querySelector('input[type=button]').addEventListener('click', function () {
-        checkGuessWord(guess, testWordArr);
+        checkGuessWord();
     });
 
     // Keyboard mouseover handler
@@ -102,11 +105,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
    // Add word letters 
-   function displayGeussInCell(indexOfLetter, letterToBeAdded, theCorrectAnswer, boardRow) {
+   function displayGeussInCell(indexOfLetter, letterToBeAdded) {
     //console.log(theCorrectAnswer);
-    console.log("Board row " + boardRow);
-    let board = document.querySelector('#board-wrapper');
-    let cellRow = document.querySelectorAll(`.letter-box[data-row="${boardRow}"`);
+    console.log("Board row " + CURRENT_ROW);
+    //let board = document.querySelector('#board-wrapper');
+    let cellRow = document.querySelectorAll(`.letter-box[data-row="${CURRENT_ROW}"`);
     cellRow[indexOfLetter].innerHTML = letterToBeAdded;
     console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded);
        
@@ -114,42 +117,59 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
     // After five letters entered in board, check word against random word
-    function checkGuessWord(guesses, theCorrectAnswer) {
-        boardRow ++;
-        guessArr = [];
-        let board = document.querySelector('#board-wrapper');
-        console.log(theCorrectAnswer);
-        console.log(guesses);
-        for (let i = 0; i < guesses.length; i ++) {
+    function checkGuessWord() {
+        console.log("the correct answer is", theCorrectAnswer);
+        
+        let board = document.querySelectorAll(`.letter-box[data-row="${CURRENT_ROW}"`);
+        let currentGuess = [
+            theGuessArr[CURRENT_ROW][0].letter, 
+            theGuessArr[CURRENT_ROW][1].letter, 
+            theGuessArr[CURRENT_ROW][2].letter,
+            theGuessArr[CURRENT_ROW][3].letter,
+            theGuessArr[CURRENT_ROW][4].letter].join("");
+        for (let i = 0; i < currentGuess.length; i ++) {
             // go through the guess array and check against the correct answer
-            if (theCorrectAnswer[i].toLowerCase() == guesses[i].toLowerCase()){
-                board.children[i].classList.add("correct");
-            } else if ((theCorrectAnswer.includes(guesses[i]) && (theCorrectAnswer[i].toLowerCase() != guesses[i]))) {
-                board.children[i].classList.add("partially-correct");
+            if (theCorrectAnswer[i].toLowerCase() == currentGuess[i].toLowerCase()){
+                board[i].classList.add("correct");
+            } else if ((theCorrectAnswer.includes(currentGuess[i]) && (theCorrectAnswer[i].toLowerCase() != theGuessArr[CURRENT_ROW][i]))) {
+                board[i].classList.add("partially-correct");
             } else {
-                board.children[i].classList.add("wrong");
+                board[i].classList.add("wrong");
             }
         }
-        isWinner(guesses, theCorrectAnswer);
+        isWinner(theGuessArr[CURRENT_ROW], theCorrectAnswer);
+        CURRENT_ROW ++;
+        console.log("The current row is ", CURRENT_ROW); 
+       
 
     }// end checkGuessWord
 
     // Add keyboard guesses to array and call function to display letter in cell
-    function captureGuess(theCorrectAnswer) {
+    function captureGuess() {
        let maxLength = 5;
-       guessArr = [];
+        console.log(2222); 
+        console.log(theGuessArr); 
+       
        document.querySelectorAll('.board-key').forEach(function(key) {
         key.addEventListener('click', function() {
-            if (guessArr.length < maxLength) {
-                let indexOfLetter = guessArr.length; 
-                guessArr.push(this.innerHTML);
-                displayGeussInCell(indexOfLetter, this.innerHTML, theCorrectAnswer, boardRow);
-                guess = guessArr;
+            console.log("IN THE CAPTURE GUESS -  ROW NUMBER ", CURRENT_ROW); 
+            let currentGuess = [
+                theGuessArr[CURRENT_ROW][0].letter, 
+                theGuessArr[CURRENT_ROW][1].letter, 
+                theGuessArr[CURRENT_ROW][2].letter,
+                theGuessArr[CURRENT_ROW][3].letter,
+                theGuessArr[CURRENT_ROW][4].letter].join("");
+
+            if (currentGuess.length < maxLength) {
+                let indexOfLetter = currentGuess.length; 
+                theGuessArr[CURRENT_ROW][indexOfLetter].letter = this.innerHTML; 
+                displayGeussInCell(indexOfLetter, this.innerHTML);
+                // = theGuessArr;
             } 
             else alert("Only 5 letters allowed");
         });
     });
-    guess = guessArr;
+    
     } // end captureGeuss
 
 
@@ -159,27 +179,58 @@ document.addEventListener("DOMContentLoaded", function(){
     const wordLength = 5;
 
     // Use map index arguments to establish data properties of cell
-    let arr = Array(numGuesses).fill().map((el, i) => Array(wordLength).fill().map((el, j) => new Cell(i,j)));
+    theGuessArr = Array(numGuesses).fill().map((el, i) => Array(wordLength).fill().map((el, j) => new Cell(i,j)));
     console.log(`This is the array to create a word board`);
-    boardWrapper.innerHTML = arr.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
+    boardWrapper.innerHTML = theGuessArr.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
 }
 
-
-    function getWord(nextCodeToExecuteCallBCK) {
+ /// getWord(null)
+    function getWord(executeFunction) {
         let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
         let url = `https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&api_key=${key}`;
         fetch (url)
         .then(response => response.json())
         .then(data => {
+            console.log(1111); 
             document.querySelector('#game-word').innerText = data.word;
             console.log(`Random word is: ${data.word}`);
-            console.log(data.word.split(""));
+            theCorrectAnswer = data.word.split(""); 
+            // fucntion a() return 1, 
+            //function b(answer) return 2 + answer
+            // result = b(a) = 3; 
+            if (firstRun == false){
+                executeFunction(); 
+            }
+            firstRun = true; 
+
             
-        })
-        .then(nextCodeToExecuteCallBCK)
+        })  
         .catch(err => console.log(err.message));
     }
+
+
+
+ checkWordAgainstDict("swxd")
+ .then ((status) => {
+      if (status == 200) 
+        console.log("FOUND A WORD"); 
+    else
+        console.log("FOUND NOT THE WORD"); 
+ })
+
+    function checkWordAgainstDict(word) {
+        let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
+        let url = `https://api.wordnik.com/v4/word.json/${word}/examples?includeDuplicates=false&useCanonical=false&limit=5&api_key=${key}`;
+       
+       
+       return  fetch (url)
+        .then(response => response.status)        
+        .catch(err => console.log(err.message));
+    }
+    
 });
+
+
 
 
 const game = new Game("adfafdfAPIKEY"); 
