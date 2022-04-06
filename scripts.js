@@ -79,10 +79,13 @@ document.addEventListener("DOMContentLoaded", function(){
     // Show/hide debug div
     document.querySelector('#debug-btn').addEventListener('click', function() {
         var div = document.querySelector('#debug-form');
+        var btn = document.querySelector('#debug-btn');
         if (div.style.display === 'block') {
+            btn.value = "Show debug form";
             div.style.display = 'none';
         } else {
             div.style.display = 'block';
+            btn.value = "Hide debug form";
         }
     });
 
