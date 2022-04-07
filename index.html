@@ -5,6 +5,7 @@
          <meta charset="utf-8">
          <title>Wordle clone</title>
          <link rel="stylesheet" href="styles.css">
+         <script src='config.js'></script>
          <script src="scripts.js"></script>
     </head>
     <body>
@@ -12,14 +13,15 @@
             <h1>Wordle</h1>
             <div id="board-wrapper"></div>
             <div id="keyboard">
-                <input type="button" value="Guess">
+                <input type="button" value="Guess" disabled>
             </div>
-            <div>
+            <div id="game-controls">
                 <form id='debug-form'>
-                    <h4>Random 5-letter word chosen for game:</h4>
+                    <h5>Random 5-letter word chosen for game:</h5>
                     <div id="game-word"></div>
                 </form>
                 <input id="debug-btn" type="button" value="Show debug form">
+                <input id="new-game" type="button" value="Start new game">
             </div>
         </div>
        
