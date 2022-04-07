@@ -5,8 +5,7 @@ class Cell {
         this.rowIndex = rowIndex;
         this.row = row;
         this.displayCell = () => `<div class='letter-box' data-row=${this.row} data-rowindex=${this.rowIndex}></div>`;
- }
-
+    }
 } // end Cell class
 
  class Keyboard  {
@@ -46,7 +45,9 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", function(){
-    
+
+
+    /*-------global vars ---------------*/
     var firstRun = false; 
     var theCorrectAnswer = null; 
     var theGuessArr = []; 
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function(){
     const key1 = new Keyboard();
 
     createBoard();
-    //createKeyboard();
+
     key1.displayKeys();
 
     // Retrieve random 5-letter word from Wordnik API
@@ -114,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function(){
        }
     }
 
-
    // Add word letters 
    function displayGeussInCell(indexOfLetter, letterToBeAdded) {
         enableGuessBtn(indexOfLetter);
@@ -126,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function(){
         console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded);
        
     }
-
 
     // After five letters entered in board, check word against random word
     function checkGuessWord() {
@@ -153,14 +152,11 @@ document.addEventListener("DOMContentLoaded", function(){
         disableGuessBtn(currentGuess);
         CURRENT_ROW ++;
         console.log("The current row is ", CURRENT_ROW);
-       
-
     }// end checkGuessWord
 
     // Add keyboard guesses to array and call function to display letter in cell
     function captureGuess() {
        let maxLength = 5;
-        console.log(2222); 
         console.log(theGuessArr); 
        
        document.querySelectorAll('.board-key').forEach(function(key) {
@@ -182,7 +178,6 @@ document.addEventListener("DOMContentLoaded", function(){
             else alert("Only 5 letters allowed");
         });
     });
-    
     } // end captureGeuss
 
 
@@ -197,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function(){
     boardWrapper.innerHTML = theGuessArr.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
 }
 
- /// getWord(null)
+
     function getWord(executeFunction) {
         let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
         let url = `https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&api_key=${key}`;
@@ -208,18 +203,13 @@ document.addEventListener("DOMContentLoaded", function(){
             document.querySelector('#game-word').innerText = data.word;
             console.log(`Random word is: ${data.word}`);
             theCorrectAnswer = data.word.split(""); 
-            // fucntion a() return 1, 
-            //function b(answer) return 2 + answer
-            // result = b(a) = 3; 
             if (firstRun == false){
                 executeFunction(); 
             }
             firstRun = true; 
-
-            
         })  
         .catch(err => console.log(err.message));
-    }
+    } // end getWord
 
 
  checkWordAgainstDict("S & M")
@@ -233,14 +223,11 @@ document.addEventListener("DOMContentLoaded", function(){
     function checkWordAgainstDict(word) {
         let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
         let url = `https://api.wordnik.com/v4/word.json/${word}/examples?includeDuplicates=false&useCanonical=false&limit=5&api_key=${key}`;
-       
-       
        return  fetch (url)
         .then(response => response.status)        
         .catch(err => console.log(err.message));
     }
   
-    
     function enableGuessBtn(i) {
         if (i == 4) {
             console.log(i);
@@ -255,10 +242,7 @@ document.addEventListener("DOMContentLoaded", function(){
             document.querySelector('#keyboard input').setAttribute('disabled', '');
         }
     }
+
+
 }); // End DOMContentLoaded
 
-
-
-
-const game = new Game("adfafdfAPIKEY"); 
-game.setUpDOM(); 
