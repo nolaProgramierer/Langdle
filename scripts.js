@@ -137,18 +137,35 @@ document.addEventListener("DOMContentLoaded", function(){
             theGuessArr[CURRENT_ROW][2].letter,
             theGuessArr[CURRENT_ROW][3].letter,
             theGuessArr[CURRENT_ROW][4].letter].join("");
-
-        for (let i = 0; i < currentGuess.length; i ++) {
-            // go through the guess array and check against the correct answer
-            if (theCorrectAnswer[i].toLowerCase() == currentGuess[i].toLowerCase()){
-                board[i].classList.add("correct");
-            } else if ((theCorrectAnswer.includes(currentGuess[i]) && (theCorrectAnswer[i].toLowerCase() != theGuessArr[CURRENT_ROW][i]))) {
-                board[i].classList.add("partially-correct");
-            } else {
-                board[i].classList.add("wrong");
+        console.log("Check what the current guess is" + currentGuess);
+        
+        
+        checkWordAgainstDict(currentGuess)
+        .then ((status) => {
+            if (status != 200) {
+                console.log("WORD NOT FOUND");
+                for (let i = 0; i < currentGuess.length; i ++) {
+                    board[i].classList.add("not-word");
+                }
             }
-        }
-        isWinner(currentGuess.split(""), theCorrectAnswer);
+            else  {
+                console.log("WORD FOUND"); 
+                //  guess array check against the correct answer
+                for (let i = 0; i < currentGuess.length; i ++) {
+                    if (theCorrectAnswer[i].toLowerCase() == currentGuess[i].toLowerCase()){
+                        board[i].classList.add("correct");
+                    } else if ((theCorrectAnswer.includes(currentGuess[i]) && (theCorrectAnswer[i].toLowerCase() != theGuessArr[CURRENT_ROW][i]))) {
+                        board[i].classList.add("partially-correct");
+                    } else {
+                        board[i].classList.add("wrong");
+                    }
+                }
+                isWinner(currentGuess.split(""), theCorrectAnswer);
+            }
+                
+        });
+
+
         disableGuessBtn(currentGuess);
         CURRENT_ROW ++;
         console.log("The current row is ", CURRENT_ROW);
@@ -211,18 +228,20 @@ document.addEventListener("DOMContentLoaded", function(){
         .catch(err => console.log(err.message));
     } // end getWord
 
-
- checkWordAgainstDict("S & M")
+/*
+ checkWordAgainstDict("xxxx")
  .then ((status) => {
-      if (status == 200) 
+    if (status == 200) 
         console.log("FOUND A WORD"); 
-    else
-        console.log("WORD NOT FOUND"); 
+       
+    else console.log("Something went wrong with the request!");
+        
  });
+ */
 
-    function checkWordAgainstDict(word) {
+  function checkWordAgainstDict(word) {
         let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
-        let url = `https://api.wordnik.com/v4/word.json/${word}/examples?includeDuplicates=false&useCanonical=false&limit=5&api_key=${key}`;
+        let url = `https://api.wordnik.com/v4/word.json/${word}/definitions?limit=1&includeRelated=false&sourceDictionaries=all&useCanonical=false&includeTags=false&api_key=${key}`;
        return  fetch (url)
         .then(response => response.status)        
         .catch(err => console.log(err.message));
