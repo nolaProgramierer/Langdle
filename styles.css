@@ -12,6 +12,12 @@
 #board-wrapper {
     grid-row: 2 / 3;
     grid-column: 2 / 3;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    justify-items: stretch;
+    align-items: stretch;
+   
 }
 #keyboard {
     grid-row: 3 / 4;
@@ -42,13 +48,12 @@
     text-align: center;
 }
 .letter-box {
-    height: 3em;
-    width: 20%;
-    display: inline-block;
+    height: 2.5em;
     box-sizing: border-box;
     outline: 1px solid black;
     padding-right: 2px;
     text-align: center;
+    font-size: 1.5em;
 }
 .correct {
     background-color: lightgreen;
