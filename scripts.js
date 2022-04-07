@@ -46,10 +46,13 @@ class Game {
 }
 
 document.addEventListener("DOMContentLoaded", function(){
+    
     var firstRun = false; 
     var theCorrectAnswer = null; 
     var theGuessArr = []; 
     var CURRENT_ROW = 0; // used to access different rows for each of the user's guesses
+    
+    // Initialize new keyboard
     const key1 = new Keyboard();
 
     createBoard();
@@ -89,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     });
 
-    // New game button
+    // Handle new game button
     document.querySelector('#new-game').addEventListener('click', function() {
         location.reload();
     });
@@ -104,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function(){
            document.querySelector('#debug-form').style.display = "none";
            document.querySelector('#debug-btn').style.display = "none";
            document.querySelector('#new-game').style.display = "block";
+           // Disable clicks in keyboard area
            document.querySelector('#keyboard').classList.add('disable-click');
        } else  {
            console.log("We're continuing");
@@ -113,12 +117,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
    // Add word letters 
    function displayGeussInCell(indexOfLetter, letterToBeAdded) {
-    //console.log(theCorrectAnswer);
-    console.log("Board row " + CURRENT_ROW);
-    //let board = document.querySelector('#board-wrapper');
-    let cellRow = document.querySelectorAll(`.letter-box[data-row="${CURRENT_ROW}"`);
-    cellRow[indexOfLetter].innerHTML = letterToBeAdded;
-    console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded);
+        enableGuessBtn(indexOfLetter);
+        //console.log(theCorrectAnswer);
+        console.log("Board row " + CURRENT_ROW);
+        //let board = document.querySelector('#board-wrapper');
+        let cellRow = document.querySelectorAll(`.letter-box[data-row="${CURRENT_ROW}"`);
+        cellRow[indexOfLetter].innerHTML = letterToBeAdded;
+        console.log("Letter was added at index of ", indexOfLetter, "letter = ", letterToBeAdded);
        
     }
 
@@ -126,7 +131,6 @@ document.addEventListener("DOMContentLoaded", function(){
     // After five letters entered in board, check word against random word
     function checkGuessWord() {
         console.log("the correct answer is", theCorrectAnswer);
-        
         let board = document.querySelectorAll(`.letter-box[data-row="${CURRENT_ROW}"`);
         let currentGuess = [
             theGuessArr[CURRENT_ROW][0].letter, 
@@ -134,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function(){
             theGuessArr[CURRENT_ROW][2].letter,
             theGuessArr[CURRENT_ROW][3].letter,
             theGuessArr[CURRENT_ROW][4].letter].join("");
+
         for (let i = 0; i < currentGuess.length; i ++) {
             // go through the guess array and check against the correct answer
             if (theCorrectAnswer[i].toLowerCase() == currentGuess[i].toLowerCase()){
@@ -145,8 +150,9 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         }
         isWinner(currentGuess.split(""), theCorrectAnswer);
+        disableGuessBtn(currentGuess);
         CURRENT_ROW ++;
-        console.log("The current row is ", CURRENT_ROW); 
+        console.log("The current row is ", CURRENT_ROW);
        
 
     }// end checkGuessWord
@@ -172,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 theGuessArr[CURRENT_ROW][indexOfLetter].letter = this.innerHTML; 
                 displayGeussInCell(indexOfLetter, this.innerHTML);
                 // = theGuessArr;
-            } 
+            }
             else alert("Only 5 letters allowed");
         });
     });
@@ -216,7 +222,6 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
 
-
  checkWordAgainstDict("S & M")
  .then ((status) => {
       if (status == 200) 
@@ -234,7 +239,22 @@ document.addEventListener("DOMContentLoaded", function(){
         .then(response => response.status)        
         .catch(err => console.log(err.message));
     }
+  
     
+    function enableGuessBtn(i) {
+        if (i == 4) {
+            console.log(i);
+            document.querySelector('#keyboard input').removeAttribute('disabled');
+        } else {
+            document.querySelector('#keyboard input').setAttribute('disabled', '');
+        }
+    }
+
+    function disableGuessBtn(guess) {
+        if (guess.length == 5) {
+            document.querySelector('#keyboard input').setAttribute('disabled', '');
+        }
+    }
 }); // End DOMContentLoaded
 
 

@@ -18,6 +18,11 @@
     grid-column: 2 / 3;
     justify-self: center;
 }
+@media only screen and (min-width: 900px) {
+    #keyboard {
+       font-size: 1.25em;
+    }
+}
 @media only screen and (max-width: 720px) {
     #keyboard {
        font-size: .80em;
