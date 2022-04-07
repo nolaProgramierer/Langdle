@@ -36,15 +36,6 @@ class Cell {
 
 document.addEventListener("DOMContentLoaded", function(){
 
-<<<<<<< HEAD
-    //createBoard();
-
-    //createKeyboard();
-    //const key1 = new Keyboard();
-    //key1.displayKeys();
-
-    //getWord();
-=======
 
     /*-------global vars ---------------*/
     var firstRun = false; 
@@ -57,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function(){
     key1.displayKeys();
 
     createBoard();
->>>>>>> main
 
     // Retrieve random 5-letter word from Wordnik API
     getWord(captureGuess); 
@@ -97,97 +87,6 @@ document.addEventListener("DOMContentLoaded", function(){
         location.reload();
     });
 
-<<<<<<< HEAD
-    // let currGame = new Game()
-    function Game() {
-
-        this.gameBoard = createBoard();
-        this.keyBoard = new Keyboard();
-        this.guessCount = 0;
-        this.randomWord = getWord();
-        
-        function Cell (letter = "", color = 'white') {
-            this.letter = letter;
-            this.color = color;
-            this.displayCell = () => `<div class='letter-box'></div>`;
-            this.displayCellAsKey = () => {
-                
-            }
-        }
-     
-        function Keyboard (letter = "", color = 'white') {
-            // one dimensional
-            this.symbolArr = [
-             ['q','w','e','r','t','y','u','i','o','p'],
-             ['a','s','d','f','g','h','j','k','l'],
-             ['z','x','c','v','b','n','m']
-         ];
-            this.letter = letter;
-            this.color = color;
-            
-            this.printKeyboard = 
-            
-            this.keyboardCellArray = Array(26).fill().map(() => new Cell());
-
-            //this.keyboardCellArray[0].letter = 
-
-
-            this.displayKeys = function() {
-             for (var i = 0; i < this.symbolArr.length; i++) {
-                 let boardRow = document.createElement('div');
-                     boardRow.classList.add('board-row'); 
-                 for(var j = 0; j < this.symbolArr[i].length; j ++) {
-                     this.letter = document.createElement('div');
-                     this.letter.classList.add('board-key');
-                     this.letter.innerHTML = this.symbolArr[i][j];
-                     boardRow.append(this.letter);
-                 }
-                 document.querySelector('#keyboard').append(boardRow);
-             }
-            };
-        }
-
-        
-        function createBoard() {
-            const numGuesses = 6;
-            const wordLength = 5;
-            return  Array(numGuesses).fill().map(() => Array(wordLength).fill().map(() => new Cell()));
-            
-        }
-
-        function printBoard() {
-            const boardWrapper = document.querySelector('#board-wrapper');
-            boardWrapper.innerHTML = this.gameBoard.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
-        }
-
-        function getWord() {
-            var randomWord;
-            let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
-            let url = `https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&api_key=${key}`;
-            fetch (url)
-            .then(response => response.json())
-            .then(data => {
-                document.querySelector('#game-word').innerText = data.word;
-                randomWord = data.word;
-                console.log(randomWord);
-                return randomWord;
-            })
-            .catch(err => console.log(err.message));
-        }
-     
-    }// End Game class
-
-
-   
-   function displayGeuss(arr) {
-       var board = document.querySelector('#board-wrapper');
-     
-
-   }
-   captureGuess();
-   // Capture guess from kieyboard input
-   function captureGuess() {
-=======
     // Test for winner
     function isWinner(arr0, arr1) {
        if (arr0.join("") == arr1.join("")) {
@@ -259,19 +158,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Add keyboard guesses to array and call function to display letters in cell
     function captureGuess() {
->>>>>>> main
        let maxLength = 5;
         console.log(theGuessArr); 
        
        document.querySelectorAll('.board-key').forEach(function(key) {
         key.addEventListener('click', function() {
-<<<<<<< HEAD
-            if (geussArr.length < maxLength) {
-                geussArr.push(this.innerHTML);
-                // Game board at [0][0] return cells
-                console.log(geussArr);
-            } else alert("Only 5 letters allowed");
-=======
             console.log("IN THE CAPTURE GUESS -  ROW NUMBER ", CURRENT_ROW); 
             let currentGuess = [
                 theGuessArr[CURRENT_ROW][0].letter, 
@@ -286,15 +177,11 @@ document.addEventListener("DOMContentLoaded", function(){
                 displayGeussInCell(indexOfLetter, this.innerHTML);
             }
             else alert("Only 5 letters allowed");
->>>>>>> main
         });
     });
     } // end captureGeuss
 
 
-<<<<<<< HEAD
-   
-=======
    function createBoard() {
     const boardWrapper = document.querySelector('#board-wrapper');
     const numGuesses = 6;
@@ -304,7 +191,6 @@ document.addEventListener("DOMContentLoaded", function(){
     console.log(`This is the array to create a word board`);
     boardWrapper.innerHTML = theGuessArr.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
 }
->>>>>>> main
 
     /*boardWrapper.innerHTML = arr.reduce((s, guessArray)=> {
       return s + guessArray.reduce((s, cell)=> {
@@ -312,22 +198,6 @@ document.addEventListener("DOMContentLoaded", function(){
       }, "");
     }, "");*/
 
-<<<<<<< HEAD
-   
-    function checkWord(word) {
-        let key = 'f5585967-bcee-4822-914f-8ed623d8f5c0';
-        let url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${key}`;
-        fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            let w = data[0].meta.stems[0];
-                console.log(w);
-        })
-        .catch(err => console.log(err.message));
-    }
-
-    
-=======
     function getWord(executeFunction) {
         let key = APIkey;
         let url = `https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&excludePartOfSpeech=given-name%2C%20family-name%2C%20abbreviation%2C%20imperative%2C%20idiom%2C%20phrasal-prefix%2C%20proper-noun%2C%20proper-noun-plural%2C%20proper-noun-posessive%2C%20suffix&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&api_key=${key}`;
@@ -379,7 +249,6 @@ document.addEventListener("DOMContentLoaded", function(){
            document.querySelector('#new-game').style.display = "block";
         }
     }
->>>>>>> main
 
 
 }); // End DOMContentLoaded
