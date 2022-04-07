@@ -42,7 +42,6 @@
 #game-controls {
     grid-row: 3 / 4;
     grid-column: 1 / 2;
-    justify-items: center;
 }
 #game-word {
     text-align: center;
@@ -106,11 +105,13 @@
 }
 #debug-btn {
     margin-top: 1em;
-    justify-self: center;
 }
 #new-game {
     display: none;
 }
 .disable-click {
     pointer-events: none;
+}
+form h5 {
+    text-align: center;
 }
