@@ -55,10 +55,9 @@ document.addEventListener("DOMContentLoaded", function(){
     
     // Initialize new keyboard
     const key1 = new Keyboard();
+    key1.displayKeys();
 
     createBoard();
-
-    key1.displayKeys();
 
     // Retrieve random 5-letter word from Wordnik API
     getWord(captureGuess); 
@@ -137,10 +136,8 @@ document.addEventListener("DOMContentLoaded", function(){
             theGuessArr[CURRENT_ROW][2].letter,
             theGuessArr[CURRENT_ROW][3].letter,
             theGuessArr[CURRENT_ROW][4].letter].join("");
-        console.log("Check what the current guess is" + currentGuess);
-        
-        
-        checkWordAgainstDict(currentGuess)
+
+        checkGuessAgainstDict(currentGuess)
         .then ((status) => {
             if (status != 200) {
                 console.log("WORD NOT FOUND");
@@ -161,17 +158,15 @@ document.addEventListener("DOMContentLoaded", function(){
                     }
                 }
                 isWinner(currentGuess.split(""), theCorrectAnswer);
-            }
-                
+            }    
         });
-
-
         disableGuessBtn(currentGuess);
         CURRENT_ROW ++;
         console.log("The current row is ", CURRENT_ROW);
+        hasRunOutOfGuesses(CURRENT_ROW);
     }// end checkGuessWord
 
-    // Add keyboard guesses to array and call function to display letter in cell
+    // Add keyboard guesses to array and call function to display letters in cell
     function captureGuess() {
        let maxLength = 5;
         console.log(theGuessArr); 
@@ -190,7 +185,6 @@ document.addEventListener("DOMContentLoaded", function(){
                 let indexOfLetter = currentGuess.length; 
                 theGuessArr[CURRENT_ROW][indexOfLetter].letter = this.innerHTML; 
                 displayGeussInCell(indexOfLetter, this.innerHTML);
-                // = theGuessArr;
             }
             else alert("Only 5 letters allowed");
         });
@@ -202,7 +196,6 @@ document.addEventListener("DOMContentLoaded", function(){
     const boardWrapper = document.querySelector('#board-wrapper');
     const numGuesses = 6;
     const wordLength = 5;
-
     // Use map index arguments to establish data properties of cell
     theGuessArr = Array(numGuesses).fill().map((el, i) => Array(wordLength).fill().map((el, j) => new Cell(i,j)));
     console.log(`This is the array to create a word board`);
@@ -228,21 +221,11 @@ document.addEventListener("DOMContentLoaded", function(){
         .catch(err => console.log(err.message));
     } // end getWord
 
-/*
- checkWordAgainstDict("xxxx")
- .then ((status) => {
-    if (status == 200) 
-        console.log("FOUND A WORD"); 
-       
-    else console.log("Something went wrong with the request!");
-        
- });
- */
 
-  function checkWordAgainstDict(word) {
+  function checkGuessAgainstDict(word) {
         let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
         let url = `https://api.wordnik.com/v4/word.json/${word}/definitions?limit=1&includeRelated=false&sourceDictionaries=all&useCanonical=false&includeTags=false&api_key=${key}`;
-       return  fetch (url)
+        return fetch (url)
         .then(response => response.status)        
         .catch(err => console.log(err.message));
     }
@@ -259,6 +242,16 @@ document.addEventListener("DOMContentLoaded", function(){
     function disableGuessBtn(guess) {
         if (guess.length == 5) {
             document.querySelector('#keyboard input').setAttribute('disabled', '');
+        }
+    }
+
+    function hasRunOutOfGuesses(row) {
+        if(row == 6) {
+            console.log("This is row " + row);
+           document.querySelector('#keyboard').classList.add('disable-click');
+           document.querySelector('#debug-form').style.display = "none";
+           document.querySelector('#debug-btn').style.display = "none";
+           document.querySelector('#new-game').style.display = "block";
         }
     }
 
