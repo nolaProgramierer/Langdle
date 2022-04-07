@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function getWord(executeFunction) {
         let key = 'von6krqtargm9cl56x360sohbphxblcjinkqwf9zm6wny7ap4';
-        let url = `https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&api_key=${key}`;
+        let url = `https://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&excludePartOfSpeech=given-name%2C%20family-name%2C%20abbreviation%2C%20imperative%2C%20idiom%2C%20phrasal-prefix%2C%20proper-noun%2C%20proper-noun-plural%2C%20proper-noun-posessive%2C%20suffix&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=5&api_key=${key}`;
         fetch (url)
         .then(response => response.json())
         .then(data => {
