@@ -33,8 +33,43 @@ class Cell {
     }
 } // end Keyboard class
 
+const directionArr = [];
+class Direction {
+    constructor(color, label) {
+        this.color = color;
+        this.label = label;
+    }         
+}  // end Direction class
+
 
 document.addEventListener("DOMContentLoaded", function(){
+
+
+    var directionArr = [
+        new Direction('lightgreen', "Correct letter, correct placement"),
+        new Direction("yellow", "Correct letter, wrong placement"),
+        new Direction("lightgray", "Letter not in word"),
+        new Direction("red", "Word does not exist")
+        ];
+    console.log(directionArr[0].color);/*
+    function showDirections(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        let div = document.createElement('div');
+        let p = document.createElement('p');
+        p.innerText = arr[i].label;
+        div.append(p);
+        div.style.backgroundColor = arr[i].color;
+        document.querySelector('#directions').append(div);
+        }
+    }
+*/
+
+//showDirections(directionArr);
+
+var markup = directionArr.reduce((html, objItem) => {
+    return html + `<div style='background-color:${objItem.color}'><p>${objItem.label}</p></div>`;
+}, "");
+document.querySelector('#directions').innerHTML = markup;
 
 
     /*-------global vars ---------------*/
