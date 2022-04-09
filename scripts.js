@@ -33,7 +33,6 @@ class Cell {
     }
 } // end Keyboard class
 
-const directionArr = [];
 class Direction {
     constructor(color, label) {
         this.color = color;
@@ -43,33 +42,6 @@ class Direction {
 
 
 document.addEventListener("DOMContentLoaded", function(){
-
-
-    var directionArr = [
-        new Direction('lightgreen', "Correct letter, correct placement"),
-        new Direction("yellow", "Correct letter, wrong placement"),
-        new Direction("lightgray", "Letter not in word"),
-        new Direction("red", "Word does not exist")
-        ];
-    console.log(directionArr[0].color);/*
-    function showDirections(arr) {
-    for (let i = 0; i < arr.length; i++) {
-        let div = document.createElement('div');
-        let p = document.createElement('p');
-        p.innerText = arr[i].label;
-        div.append(p);
-        div.style.backgroundColor = arr[i].color;
-        document.querySelector('#directions').append(div);
-        }
-    }
-*/
-
-//showDirections(directionArr);
-
-var markup = directionArr.reduce((html, objItem) => {
-    return html + `<div style='background-color:${objItem.color}'><p>${objItem.label}</p></div>`;
-}, "");
-document.querySelector('#directions').innerHTML = markup;
 
 
     /*-------global vars ---------------*/
@@ -114,6 +86,19 @@ document.querySelector('#directions').innerHTML = markup;
         } else {
             div.style.display = 'block';
             btn.value = "Hide debug form";
+        }
+    });
+
+     // Show/hide legend div
+     document.querySelector('#legend-btn').addEventListener('click', function() {
+        var div = document.querySelector('#directions');
+        var btn = document.querySelector('#legend-btn');
+        if (div.style.display === 'block') {
+            btn.value = "Show legend";
+            div.style.display = 'none';
+        } else {
+            div.style.display = 'block';
+            btn.value = "Hide legend";
         }
     });
 
@@ -227,11 +212,19 @@ document.querySelector('#directions').innerHTML = markup;
     boardWrapper.innerHTML = theGuessArr.reduce((s, guessArray) => s + guessArray.reduce((s, cell) => s + cell.displayCell(), ""), "");
 }
 
-    /*boardWrapper.innerHTML = arr.reduce((s, guessArray)=> {
-      return s + guessArray.reduce((s, cell)=> {
-          return s + cell.displayCell();
-      }, "");
-    }, "");*/
+    // Directions HTML
+    var directionArr = [
+        new Direction('lightgreen', "Correct letter, correct placement"),
+        new Direction("yellow", "Correct letter, wrong placement"),
+        new Direction("lightgray", "Letter not in word"),
+        new Direction("red", "Word does not exist")
+        ];
+
+    var markup = directionArr.reduce((html, objItem) => {
+    return html + `<div style='background-color:${objItem.color}'><p>${objItem.label}</p></div>`;
+    }, "");
+    document.querySelector('#directions').innerHTML = markup;
+
 
     function getWord(executeFunction) {
         let key = APIkey;
